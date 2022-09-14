@@ -1,0 +1,12 @@
+div {
+    width: 50vw;
+    height: 50vh;
+    margin: 0 auto;
+    background-color: brown;
+    border-color: black;
+}
+h1 {
+    text-align: center;
+    font-size: 9em;
+    color: black;
+}
