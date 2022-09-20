@@ -1,14 +1,14 @@
 "use strict"
-const calc = createCalculator(10);
+function createCalculator(base) {
+    const calculator = () => base;
 
-function createCalculator() {
-    return {
-        sum: () => a + 10,
-        mult: () => sum * 10,
-        sub: () => mult - 40,
-        div: () => sub / 10,
-        set: (b) => a = b,
-    }
+    calculator.add = (b) => (base += b);
+    calculator.div = (b) => (base /= b);
+    calculator.sub = (b) => (base -= b);
+    calculator.mult = (b) => (base *= b);
+    calculator.set = (b) => (base = b);
+
+    return calculator;
 }
 
-
+const calc = createCalculator(10);
