@@ -1,0 +1,21 @@
+.list-item {
+  padding: 10px;
+  border: 1px solid;
+  margin: 5px;
+  background-color: lightyellow;
+  color: black;
+  cursor: pointer;
+}
+
+.list-item.done {
+  background-color: lightgreen;
+}
+
+.list-item .delete-btn {
+  float: right;
+  margin-right: 10px;
+}
+
+input.invalid-input {
+  background-color: lightcoral;
+}

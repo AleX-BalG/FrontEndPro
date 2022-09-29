@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>HomeWork10</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Phone</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="contactslist">
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th><input type="text" id="name"></th>
+                <th><input type="text" id="surname"></th>
+                <th><input type="text" id="phone"></th>
+                <th><button id="contact__save-btn">Save</button></th>
+            </tr>
+        </tfoot>
+    </table>
+    <script id="listTemplate" type="text/template">
+        <div class="u-full-width todo-item">
+            {{title}}
+            <span class="delete-btn">X</span>
+        </div>
+    </script>
+</body>
+</html>
