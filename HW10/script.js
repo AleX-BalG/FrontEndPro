@@ -1,95 +1,140 @@
-const TODO_ITEM_CLASS = 'list-item';
-const DONE_ITEM_CLASS = 'done';
 const DELETE_BTN_CLASS = 'delete-btn';
-const INVALID_CLASS = 'invalid-input';
-const listTemplate = document.querySelector('#listTemplate').innerHTML;
-const contactsListEl = document.querySelector('#contactslist');
+const EDIT_BTN_CLASS = 'edit-btn';
+const INVALID_INPUT_CLASS = 'invalid-input';
+const CONTACT_ITEM_SELECTOR = '.contact-item';
+
+const contactsListEl = document.querySelector('#contactsList');
+const contactForm = document.querySelector('#contactForm');
+const idInput = document.querySelector('#id');
 const nameInput = document.querySelector('#name');
 const surnameInput = document.querySelector('#surname');
 const phoneInput = document.querySelector('#phone');
-const contactSeveBtn = document.querySelector('#contact__save-btn');
+const contactTemplate = document.querySelector('#contactTemplate').innerHTML;
 
-contactSeveBtn.addEventListener('click', onAddContactBtnClick);
+let contactsList = [
+    { id: 1, name: 'Alex', surname: 'Smith', phone: '21314315' },
+    { id: 2, name: 'Bob', surname: 'Johns', phone: '2524523452345' },
+    { id: 3, name: 'John', surname: 'Snow', phone: '58568686' },
+];
 
-function onAddContactBtnClick() {
-    if (!validateForm()) {
-        return;
-    }
-    const newContact = getValues();
-    addContact(newContact);
-    resetForm();
+contactForm.addEventListener('submit', onFormSubmit);
+contactsListEl.addEventListener('click', onContactsListElClick);
+nameInput.addEventListener('input', onFormElementInput);
+surnameInput.addEventListener('input', onFormElementInput);
+phoneInput.addEventListener('input', onFormElementInput);
+
+init();
+
+function init() {
+    renderList(contactsList);
 }
 
-function validateForm() {
-    resetValidation();
+function onFormSubmit(e) {
+    e.preventDefault();
 
-    if (nameInput.value === '') {
-        nameInput.classList.add('invalid-input');
-        return false;
-    }
-    if (surnameInput.value === '') {
-        surnameInput.classList.add('invalid-input');
-        return false;
-    }
-    if (phoneInput.value === '') {
-        phoneInput.classList.add('invalid-input');
-        return false;
-    }
-    return true;
+    const contactData = getFormValues();
+
+    saveContact(contactData);
+    resetFormData();
 }
 
-function resetValidation() {
-    nameInput.classList.remove('invalid-input');
-    surnameInput.classList.remove('invalid-input');
-    phoneInput.classList.remove('invalid-input');
+function onContactsListElClick(e) {
+    const contactId = getContactId(e.target);
+
+    if (e.target.classList.contains(DELETE_BTN_CLASS)) {
+        deleteContact(contactId);
+    }
+    if (e.target.classList.contains(EDIT_BTN_CLASS)) {
+        editContact(contactId);
+    }
 }
 
-function getValues() {
+function onFormElementInput(e) {
+    validateInput(e.target);
+}
+
+function renderList(list) {
+    contactsListEl.innerHTML = list.map(generateContactHtml).join('');
+}
+
+function generateContactHtml({ id, name, surname, phone }) {
+    return contactTemplate
+        .replaceAll('{{id}}', id)
+        .replaceAll('{{name}}', name)
+        .replaceAll('{{surname}}', surname)
+        .replaceAll('{{phone}}', phone);
+}
+
+function getFormValues() {
     return {
+        id: +idInput.value,
         name: nameInput.value,
         surname: surnameInput.value,
         phone: phoneInput.value,
     };
 }
 
-function addContact(contact) {
-    const contactEl = ganarateContactElement(contact);
-
-    contactsListEl.append(contactEl);
+function fillFormValues({ id, name, surname, phone }) {
+    idInput.value = id;
+    nameInput.value = name;
+    surnameInput.value = surname;
+    phoneInput.value = phone;
 }
 
-function ganarateContactElement({ name, surname, phone }) {
-    const trEl = document.createElement('tr');
-    // const deliteBtn = document.createElement('span');
-
-    const listHtml = generateListHtml(list);
-    listEl.insertAdjacentHTML('beforeend', listHtml);
-
-    trEl.append(generateCell(name));
-    trEl.append(generateCell(surname));
-    trEl.append(generateCell(phone));
-
-    // deliteBtn.textContent = 'X';
-    // deliteBtn.classList.add('delite-btn');
-
-    // trEl.append(deliteBtn);
-
-    return trEl;
-}
-
-function generateListHtml({ title }) {
-    return listTemplate.replaceAll('{{title}}', title);
-}
-
-function generateCell(value) {
-    const tdEl = document.createElement('td');
-    tdEl.textContent = value;
-
-    return tdEl;
-}
-
-function resetForm() {
+function resetFormData() {
+    idInput.value = '';
     nameInput.value = '';
     surnameInput.value = '';
     phoneInput.value = '';
+}
+
+function getContactId(el) {
+    return +el.closest(CONTACT_ITEM_SELECTOR).dataset.contactId;
+}
+
+function saveContact(contact) {
+    if (contact.id === 0) {
+        addContact(contact);
+    } else {
+        updateContact(contact);
+    }
+}
+
+function addContact(contact) {
+    contact.id = Date.now();
+
+    contactsList.push(contact);
+    renderList(contactsList);
+}
+
+function updateContact(contact) {
+
+    contactsList = contactsList.map((item) =>
+        item.id === contact.id ? contact : item
+    );
+
+    renderList(contactsList);
+}
+
+function deleteContact(id) {
+
+    contactsList = contactsList.filter((item) => item.id !== id);
+    renderList(contactsList);
+}
+
+function editContact(id) {
+    const contact = contactsList.find((item) => item.id === id);
+    currentContactId = id;
+    fillFormValues(contact);
+}
+
+function validateInput(input) {
+    resetValidation(input);
+    if (input.value === '') {
+        input.classList.add(INVALID_INPUT_CLASS);
+    }
+}
+
+function resetValidation(input) {
+    input.classList.remove(INVALID_INPUT_CLASS);
 }
