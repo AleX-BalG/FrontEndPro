@@ -1,45 +1,92 @@
 "use strict"
-const casesList = document.querySelector('#cases__list');
-const enterInput = document.querySelector('#enter__input');
-const enterBtn = document.querySelector('#enter__btn');
+const TODO_ITEM_CLASS = 'todo-item';
+const DONE_ITEM_CLASS = 'done';
+const DELETE_BTN_CLASS = 'delete-btn';
+const INVALID_CLASS = 'invalid-input';
+const todoTemplate = document.querySelector('#todoTemplate').innerHTML;
+const listEl = document.querySelector('#list');
+const newTodoTitleInput = document.querySelector('#newTodoTitle');
+const saveTodoBtn = document.querySelector('#saveTodoBtn');
+const newTodoForm = document.querySelector('#newTodoForm');
 
-enterBtn.addEventListener('click', addToTheList);
+newTodoForm.addEventListener('submit', onFormSubmit);
+newTodoTitleInput.addEventListener('input', onNewTodoTitleChange);
+listEl.addEventListener('click', onListClick);
 
-function addToTheList() {
-    if (!validationEnterInput()) {
-        return
+addTodo({ title: 'Todo 1' });
+addTodo({ title: 'Todo 2' });
+addTodo({ title: 'Todo 3' });
+addTodo({ title: 'Todo 4' });
+
+function onListClick(event) {
+    if (event.target.classList.contains(TODO_ITEM_CLASS)) {
+        toggleTodo(event.target);
     }
-    const newTask = getNewListItem();
-    addTask(newTask);
-    resetEnterInput();
+    if (event.target.classList.contains(DELETE_BTN_CLASS)) {
+        removeTodo(event.target.parentElement);
+    }
 }
 
-function validationEnterInput() {
-    if(enterInput.value === '') {
+function onFormSubmit(event) {
+    event.preventDefault();
+    console.log(event);
+
+    if (!validateForm()) {
+        return;
+    }
+    const newTodo = getFormData();
+    addTodo(newTodo);
+    resetFormData();
+}
+
+function onNewTodoTitleChange(event) {
+    validateForm();
+}
+
+function validateForm() {
+    resetFormValidation();
+    if (newTodoTitleInput.value === '') {
+        newTodoTitleInput.classList.add(INVALID_CLASS);
+        saveTodoBtn.disabled = true;
         return false;
     }
+
     return true;
 }
 
-function getNewListItem() {
-    const newItem = enterInput.value;
-    return newItem;
+function resetFormValidation() {
+    newTodoTitleInput.classList.remove(INVALID_CLASS);
+    saveTodoBtn.disabled = false;
 }
 
-function addTask(task) {
-    const taskEl = generatinTask(task);
-    casesList.append(taskEl);
+function getFormData() {
+    return {
+        title: newTodoTitleInput.value,
+    };
 }
 
-function generatinTask(task) {
-    let liElement = document.createElement('li');
-    liElement.textContent = task;
-    liElement.addEventListener('click', () => {
-        liElement.classList.toggle('ready');
-    })
-    return liElement;
+function addTodo(todo) {
+
+    const todoHtml = generateTodoHtml(todo);
+    listEl.insertAdjacentHTML('beforeend', todoHtml);
 }
 
-function resetEnterInput() {
-    enterInput.value = '';
+function generateTodoHtml({ title }) {
+    return todoTemplate.replaceAll('{{title}}', title);
+}
+
+function resetFormData() {
+    newTodoTitleInput.value = '';
+}
+
+function clearList() {
+    listEl.innerHTML = '';
+}
+
+function toggleTodo(todoEl) {
+    todoEl.classList.toggle(DONE_ITEM_CLASS);
+}
+
+function removeTodo(todoEl) {
+    todoEl.remove();
 }

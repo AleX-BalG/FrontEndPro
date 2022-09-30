@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../common/css/normalize.css" />
+    <link rel="stylesheet" href="../common/css/skeleton.css" />
+    <link rel="stylesheet" href="../common/css/dark-theme.css" />
     <link rel="stylesheet" href="style.css" />
-    <title>HomeWork9</title>
+    <title>HomeWork11</title>
     <script src="script.js" defer></script>
 </head>
+
 <body>
-    <div class="todolist">
-        <h1 class="todolist__title">to do list</h1>
-        <div id="todolist__cases">
-            <ul id="cases__list">
-                <!-- <li class="list__item"></li> -->
-            </ul>
+    <div class="container">
+        <div class="row">
+            <div class="twelve columns" id="list"></div>
         </div>
-        <div class="wrap__enter">
-            <input type="text" id="enter__input">
-            <button id="enter__btn">Enter</button>
+        <div class="row">
+            <form id="newTodoForm">
+                <div class="ten columns">
+                    <input type="text" class="u-full-width" id="newTodoTitle" />
+                </div>
+                <div class="two columns">
+                    <button id="saveTodoBtn">Save</button>
+                </div>
+            </form>
         </div>
     </div>
+    <script id="todoTemplate" type="text/template">
+            <div class="u-full-width todo-item">
+                {{title}}
+                <span class="delete-btn">X</span>
+            </div>
+        </script>
 </body>
+
 </html>

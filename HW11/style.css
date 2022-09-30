@@ -1,42 +1,27 @@
-.todolist {
-  margin: 0 auto;
-  width: 50vw;
-  background-color: rgba(60, 60, 68, 0.459);
-  border: 2px solid black;
+.container {
+  margin-top: 3vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: column-reverse;
 }
 
-#todolist__cases {
-  width: 100%;
-  min-height: 60vh;
-  border-top: 1px solid black;
+.todo-item {
+  padding: 10px;
+  border: 1px solid;
+  margin: 5px;
+  background-color: lightyellow;
+  color: black;
+  cursor: pointer;
 }
 
-#cases__list li {
-  padding: 2%;
-  background-color: rgba(255, 0, 0, 0.384);
-  border-radius: 20px;
+.todo-item.done {
+  background-color: lightgreen;
 }
 
-#cases__list .ready {
-  background-color: rgba(13, 255, 0, 0.384);
+.todo-item .delete-btn {
+  float: right;
+  margin-right: 10px;
 }
 
-.wrap__enter {
-  width: 100%;
-  border: 2px solid rgb(237, 8, 8);
-}
-
-#enter__input {
-  margin: 1%;
-  width: 80%;
-  min-height: 10vh;
-}
-
-#enter__btn {
-  margin: 1%;
-  width: 14%;
-  min-height: 10vh;
+input.invalid-input {
+  background-color: lightcoral;
 }
