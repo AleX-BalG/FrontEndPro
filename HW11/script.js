@@ -1,5 +1,6 @@
 "use strict"
-const TODO_ITEM_CLASS = 'todo-item';
+const TODO_ITEM_SELECTOR = '.todo-item';
+const TODO_TITLE_CLASS = 'todo-title';
 const DONE_ITEM_CLASS = 'done';
 const DELETE_BTN_CLASS = 'delete-btn';
 const INVALID_CLASS = 'invalid-input';
@@ -13,23 +14,39 @@ newTodoForm.addEventListener('submit', onFormSubmit);
 newTodoTitleInput.addEventListener('input', onNewTodoTitleChange);
 listEl.addEventListener('click', onListClick);
 
-addTodo({ title: 'Todo 1' });
-addTodo({ title: 'Todo 2' });
-addTodo({ title: 'Todo 3' });
-addTodo({ title: 'Todo 4' });
+let todoDeta = [
+{ title: 'Todo 1', id: 1, status: 'not done' },
+{ title: 'Todo 2', id: 2, status: 'not done' },
+{ title: 'Todo 3', id: 3, status: 'not done' },
+{ title: 'Todo 4', id: 4, status: 'not done' },
+]
 
-function onListClick(event) {
-    if (event.target.classList.contains(TODO_ITEM_CLASS)) {
-        toggleTodo(event.target);
+init();
+
+function init() {
+    renderTodoData(todoDeta);
+}
+function renderTodoData(todo) {
+    const htmls = todo.map(generateTodoHtml);
+    listEl.innerHTML = htmls.join('');
+    changeFone(todo);
+}
+
+function onListClick(e) {
+    const todoId = getTodoId(e.target);
+    
+    if (e.target.classList.contains(TODO_TITLE_CLASS)) {
+        toggleTodo(todoId);
+    
     }
-    if (event.target.classList.contains(DELETE_BTN_CLASS)) {
-        removeTodo(event.target.parentElement);
+    
+    if (e.target.classList.contains(DELETE_BTN_CLASS)) {
+        deleteTodo(todoId);
     }
 }
 
-function onFormSubmit(event) {
-    event.preventDefault();
-    console.log(event);
+function onFormSubmit(e) {
+    e.preventDefault();
 
     if (!validateForm()) {
         return;
@@ -39,7 +56,7 @@ function onFormSubmit(event) {
     resetFormData();
 }
 
-function onNewTodoTitleChange(event) {
+function onNewTodoTitleChange(e) {
     validateForm();
 }
 
@@ -65,14 +82,23 @@ function getFormData() {
     };
 }
 
-function addTodo(todo) {
-
-    const todoHtml = generateTodoHtml(todo);
-    listEl.insertAdjacentHTML('beforeend', todoHtml);
+function getTodoId(el) {
+    return +el.closest(TODO_ITEM_SELECTOR).dataset.todoId;
 }
 
-function generateTodoHtml({ title }) {
-    return todoTemplate.replaceAll('{{title}}', title);
+function addTodo(todo) {
+    todo.id = Date.now();
+    todo.status = 'not done';
+
+    todoDeta.push(todo);
+    renderTodoData(todoDeta);
+}
+
+function generateTodoHtml({ title, id, status }) {
+    return todoTemplate
+        .replaceAll('{{title}}', title)
+        .replaceAll('{{id}}', id)
+        .replaceAll('{{status}}', status);
 }
 
 function resetFormData() {
@@ -83,10 +109,24 @@ function clearList() {
     listEl.innerHTML = '';
 }
 
-function toggleTodo(todoEl) {
-    todoEl.classList.toggle(DONE_ITEM_CLASS);
+function toggleTodo(id) {
+    const el = todoDeta.find((item) => item.id === id);
+
+    if (el.status == 'not done') {
+        el.status = 'done';
+    } else {
+        el.status = 'not done';
+    }
+
+    renderTodoData(todoDeta);
 }
 
-function removeTodo(todoEl) {
-    todoEl.remove();
+function changeFone(el) {
+    console.log(el);
+    
+}
+
+function deleteTodo(id) {
+    todoDeta = todoDeta.filter((item) => item.id !== id);
+    renderTodoData(todoDeta);
 }

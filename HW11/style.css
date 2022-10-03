@@ -5,20 +5,27 @@
 }
 
 .todo-item {
-  padding: 10px;
   border: 1px solid;
   margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   background-color: lightyellow;
   color: black;
   cursor: pointer;
 }
 
-.todo-item.done {
+.todo-title {
+  width: 90%;
+  padding: 10px;
+}
+
+.done {
   background-color: lightgreen;
 }
 
 .todo-item .delete-btn {
-  float: right;
+  padding: 10px;
   margin-right: 10px;
 }
 

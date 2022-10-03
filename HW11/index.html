@@ -30,8 +30,10 @@
         </div>
     </div>
     <script id="todoTemplate" type="text/template">
-            <div class="u-full-width todo-item">
-                {{title}}
+            <div class="u-full-width todo-item" data-todo-id="{{id}}" data-todo-status="{{status}}">
+                <div class="todo-title">
+                    {{title}}
+                </div>                    
                 <span class="delete-btn">X</span>
             </div>
         </script>
