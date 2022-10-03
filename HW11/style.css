@@ -20,7 +20,7 @@
   padding: 10px;
 }
 
-.done {
+.todo-item.done {
   background-color: lightgreen;
 }
 

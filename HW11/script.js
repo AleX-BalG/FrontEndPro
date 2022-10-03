@@ -15,10 +15,10 @@ newTodoTitleInput.addEventListener('input', onNewTodoTitleChange);
 listEl.addEventListener('click', onListClick);
 
 let todoDeta = [
-{ title: 'Todo 1', id: 1, status: 'not done' },
-{ title: 'Todo 2', id: 2, status: 'not done' },
-{ title: 'Todo 3', id: 3, status: 'not done' },
-{ title: 'Todo 4', id: 4, status: 'not done' },
+{ title: 'Todo 1', id: 1, status: 'not-done' },
+{ title: 'Todo 2', id: 2, status: 'not-done' },
+{ title: 'Todo 3', id: 3, status: 'not-done' },
+{ title: 'Todo 4', id: 4, status: 'not-done' },
 ]
 
 init();
@@ -29,7 +29,6 @@ function init() {
 function renderTodoData(todo) {
     const htmls = todo.map(generateTodoHtml);
     listEl.innerHTML = htmls.join('');
-    changeFone(todo);
 }
 
 function onListClick(e) {
@@ -88,7 +87,7 @@ function getTodoId(el) {
 
 function addTodo(todo) {
     todo.id = Date.now();
-    todo.status = 'not done';
+    todo.status = 'not-done';
 
     todoDeta.push(todo);
     renderTodoData(todoDeta);
@@ -112,18 +111,13 @@ function clearList() {
 function toggleTodo(id) {
     const el = todoDeta.find((item) => item.id === id);
 
-    if (el.status == 'not done') {
+    if (el.status == 'not-done') {
         el.status = 'done';
     } else {
-        el.status = 'not done';
+        el.status = 'not-done';
     }
 
     renderTodoData(todoDeta);
-}
-
-function changeFone(el) {
-    console.log(el);
-    
 }
 
 function deleteTodo(id) {
