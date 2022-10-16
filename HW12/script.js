@@ -1,27 +1,27 @@
 "use strict"
 
-const calc = new Calculator();
+const calc = new Calculator(10);
 
 function Calculator(a) {
     this.result = a;
     this.sum = function (b) {
-        this.result = a + b;
+        this.result = this.result + b;
         console.log(this.result);
     };
     this.sub = function (b) {
-        this.result = a - b;
+        this.result = this.result - b;
         console.log(this.result);
     };
     this.mult = function (b) {
-        this.result = a * b;
+        this.result =  this.result * b;
         console.log(this.result);
     };
     this.div = function (b) {
-        this.result = a / b;
+        this.result = this.result / b;
         console.log(this.result);
     };
     this.set = function (b) {
-        this.result = a = b;
+        this.result = this.result = b;
         console.log(this.result);
     };
 
